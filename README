@@ -1,3 +1,38 @@
 # jotform学习
 
-+ jotform api网站https://api.jotform.com/docs/
+使用jotform api 接口下载提交数据到内部数据库
+
+## 使用
+
+```
+
+python3 -m venv .venv
+source .venv/bin/activ
+pip install -r requirements.txt
+
+
+```
+
+## jotform api
+
+GET /user/forms
+
+```
+
+    curl -H "APIKEY: " "https://api.jotform.com/user/forms"
+
+```
+
+```
+
+ curl -X GET "https://api.jotform.com/form/{formID}/submissions?apiKey={apiKey}"
+
+```
+
+## 问题
++ 提交是不是会被读
+
+## 参考
+
+jotform api网站https://api.jotform.com/docs/
+
