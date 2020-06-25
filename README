@@ -1,14 +1,22 @@
 # jotform学习
 
-使用jotform api 接口下载提交数据到内部数据库
+使用jotform api 接口下载提交数据到数据库
 
-## 使用
+## 安装
 
 ```
 
 python3 -m venv .venv
 source .venv/bin/activ
 pip install -r requirements.txt
+
+```
+
+## 使用
+
+```
+
+python main.py apiKey
 
 ```
 
