@@ -33,7 +33,7 @@ class JotFormAPI(object):
     
     def get_form_all_submissions(self, formID):
         offset = 0
-        limit = 5
+        limit = 10
         results = []
         while True:
             x = self.get_form_submissions(formID, offset, limit)
