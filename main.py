@@ -19,26 +19,28 @@ class JotFormAPI(object):
         else:
             return []
     
-    def get_form_submissions(self, formID, offset=0,limit=10):
+    def get_form_submissions(self, formID, offset=0,limit=100):
         # 一次拿结果有限制
         print('get_form_submission', formID, offset, limit)
         url = 'https://api.jotform.com/form/{}/submissions?apiKey={}&&offset={}&limit={}'.format(
             formID, self.__APIKey, offset, limit)
         ret = self.__session.get(url).json()
         if ret.get('message', '') == 'success':
+            print('total submission {}'.format(len(ret['content'])))
             return ret['content']
         else:
             return []
     
     def get_form_all_submissions(self, formID):
         offset = 0
+        limit = 5
         results = []
         while True:
-            x = self.get_form_submissions(formID, offset)
-            if len(x) == 0:
-                break
+            x = self.get_form_submissions(formID, offset, limit)
             results.extend(x)
-            offset += 10
+            offset += limit
+            if len(x) != limit:
+                break
         return results
 
 
