@@ -2,6 +2,7 @@
 import sys
 import requests
 import dataset
+import json
 
 
 class JotFormAPI(object):
@@ -49,6 +50,7 @@ class JotFormSaver(object):
         
     def submission_to_dict(self, submission):
         # 提交变字典
+        """         
         answers = submission.pop('answers')
         for _, info in answers.items():
             if 'answer' in info and 'name' in info:
@@ -58,19 +60,35 @@ class JotFormSaver(object):
                     submission[self.to_tablename('a_{}'.format(info['name']))] = '|'.join(info['answer'])
                 elif isinstance(info['answer'],dict):
                     for k,v in info['answer'].items():
-                        submission[self.to_tablename('a_{}_{}'.format(info['name'], k))] = v
+                        submission[self.to_tablename('a_{}_{}'.format(info['name'], k))] = v 
+        """
+        
+        dic = {}
+        dic['id'] = submission.pop('id')
+        dic['form_id'] = submission.pop('form_id')
+        dic['data'] = json.dumps(submission)
+        return dic
 
-        return submission
-
-    def save(self, table, submission):
+    def saveSubmission(self, submission):
         dic = self.submission_to_dict(submission)
-        self.__db[table].upsert(dic, ['id'])
+        self.__db['submission'].upsert(dic, ['id'])
+
+
+class JotFormTxtSaver(object):
+    def __init__(self):
+        self.f = open('data.txt','w+')
+
+    def saveSubmission(self, submission):
+        self.f.write(json.dumps(submission))
+        self.f.write('\n')
 
 
 def main():
     db = dataset.connect('sqlite:///data.db')
     jot = JotFormAPI(sys.argv[1])
     saver = JotFormSaver(db)
+    # saver = JotFormMongoSaver()
+    # saver = JotFormTxtSaver()
     forms = jot.get_forms()
     print('total forms {}'.format(len(forms)))
     for form in forms:
@@ -80,7 +98,7 @@ def main():
             len(submissions)))
         for item in submissions:
             table = 'submissions_{}'.format(form['id'])
-            saver.save(table, item)
+            saver.saveSubmission(item)
         
 
 
