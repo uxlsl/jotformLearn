@@ -1,6 +1,7 @@
 # 通过jotform 同步提交数据
 import sys
 import requests
+import dataset
 
 
 class JotFormAPI(object):
@@ -19,6 +20,7 @@ class JotFormAPI(object):
     
     def get_form_submissions(self, formID, offset=0,limit=10):
         # 一次拿结果有限制
+        print('get_form_submission', formID, offset, limit)
         url = 'https://api.jotform.com/form/{}/submissions?apiKey={}&&offset={}&limit={}'.format(
             formID, self.__APIKey, offset, limit)
         ret = self.__session.get(url).json()
@@ -37,10 +39,38 @@ class JotFormAPI(object):
             results.extend(x)
             offset += 10
         return results
-    
+
+
+class JotFormSaver(object):
+    def __init__(self, db):
+        self.__db = db
+    def to_tablename(self, name):
+        return name.strip().replace(' ', '_').replace('.', '')
+        
+    def submission_to_dict(self, submission):
+        # 提交变字典
+        answers = submission.pop('answers')
+        for _, info in answers.items():
+            if 'answer' in info and 'name' in info:
+                if isinstance(info['answer'],str):
+                    submission[self.to_tablename('a_{}'.format(info['name']))] = info['answer']
+                elif isinstance(info['answer'],list):
+                    submission[self.to_tablename('a_{}'.format(info['name']))] = '|'.join(info['answer'])
+                elif isinstance(info['answer'],dict):
+                    for k,v in info['answer'].items():
+                        submission[self.to_tablename('a_{}_{}'.format(info['name'], k))] = v
+
+        return submission
+
+    def save(self, table, submission):
+        dic = self.submission_to_dict(submission)
+        self.__db[table].upsert(dic, ['id'])
+
 
 def main():
+    db = dataset.connect('sqlite:///data.db')
     jot = JotFormAPI(sys.argv[1])
+    saver = JotFormSaver(db)
     forms = jot.get_forms()
     print('total forms {}'.format(len(forms)))
     for form in forms:
@@ -48,6 +78,10 @@ def main():
         print('form {}, total submissions {}'.format(
             form['id'], 
             len(submissions)))
+        for item in submissions:
+            table = 'submissions_{}'.format(form['id'])
+            saver.save(table, item)
+        
 
 
 if __name__ == '__main__':
