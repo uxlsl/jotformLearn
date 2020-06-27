@@ -2,19 +2,21 @@
     提交用户信息
 """
 import sys
-from api import JotFormAPI
+import fire
+from api import JotFormAPI,PipedriveAPI
 
 
-def main():
-    """
-        假设正确输入
-        apikey,form_id,name,email,phone,Datetime
-    """
-    jot = JotFormAPI(sys.argv[1])
-    form_id, name,email,phone,Datetime = sys.argv[2:]
-    ret = jot.submit(form_id,{'56':name,'59':email,'190':phone, '191':Datetime})
-    print(ret)
+def main(apikey,form_id,name,email,phone,Datetime,pipedrive_api_token=None,company_domain=None):
+    jot = JotFormAPI(apikey)
+    userinfo = {'56':name,'59':email,'190':phone, '191':Datetime}
+    ret = jot.submit(form_id, userinfo)
+    print('jot result', ret)
+    if pipedrive_api_token is not None and company_domain is not None:
+        pd = PipedriveAPI(pipedrive_api_token, company_domain)
+        userinfo['submissionID'] = ret['content']['submissionID']
+        r = pd.createDeal(userinfo)
+        print(r)
 
 
 if __name__ == "__main__":
-    main()
+    fire.Fire(main)

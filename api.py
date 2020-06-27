@@ -1,5 +1,5 @@
 import requests
-
+import json
 
 class JotFormAPI(object):
     def __init__(self, APIKey):
@@ -48,5 +48,31 @@ class JotFormAPI(object):
         submission = {}
         for k,v in data.items():
             submission['submission[{}]'.format(k)] = v
-        return self.__session.post('https://api.jotform.com/form/{}/submissions?apiKey={}'.format(form_id,self.__APIKey),data=submission).json()
-        
+        print(form_id, data)
+        r = self.__session.post('https://api.jotform.com/form/{}/submissions?apiKey={}'.format(form_id,self.__APIKey),data=submission)
+        print(r.text)
+        return r.json()
+
+
+class PipedriveAPI(object):
+    def __init__(self, api_token, company_domain):
+        self.__api_token = api_token
+        self.__company_domain = company_domain
+        self.__session = requests.Session()
+
+    def createDeal(self, data):
+        """
+            deal need title, org_id
+        """
+        deal = {}
+        deal['title'] = json.dumps(data)
+        deal['org_id'] = 'Your company domain goes here'
+        url = 'https://{}.pipedrive.com/api/v1/deals?api_token={}'.format(self.__company_domain,self.__api_token)
+        r = self.__session.post(url, data=deal)
+        return r.json()
+
+
+if __name__ == '__main__':
+    pd = PipedriveAPI('0468eeb9486ccea96c0f65b6029b5bb9f9532c0d', 'foobar3')
+    r = pd.createDeal({'title':'hello foobar', 'org_id': 1})
+    print(r)
