@@ -22,10 +22,10 @@ python download.py apiKey
 
 ```
 
-提交用户信息到jotform上
+提交用户信息到jotform上,并传到pipedrive上
 
 ```
-python submit.py apiKey form_id  lin lin@163.com 159921658712 2021-01-01
+python submit.py apiKey form_id  lin lin@163.com 159921658712 2021-01-01 pipedrive_api_token,company_domain
 
 ```
 
