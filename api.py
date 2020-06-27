@@ -38,3 +38,15 @@ class JotFormAPI(object):
             if len(x) != limit:
                 break
         return results
+
+
+    def submit(self, form_id, data):
+        """
+        curl -X POST -d "submission[1]=answer of Question 1" -d "submission[2_first]=First Name" -d "submission[2_last]=Last Name" "https://api.jotform.com/form/{formID}/submissions?apiKey={apiKey}"
+        data 字典 {1:1, 2:2}
+        """
+        submission = {}
+        for k,v in data.items():
+            submission['submission[{}]'.format(k)] = v
+        return self.__session.post('https://api.jotform.com/form/{}/submissions?apiKey={}'.format(form_id,self.__APIKey),data=submission).json()
+        
