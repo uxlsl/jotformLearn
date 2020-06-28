@@ -60,6 +60,13 @@ curl -X POST -d "submission[1]=answer of Question 1" -d "submission[2_first]=Fir
 
 
 
+```
+
+https://developers.pipedrive.com/docs/api/v1/#!/Persons/post_persons
+
+
+```
+
 ## 问题
 + 提交是不是会被读
 
@@ -68,3 +75,4 @@ curl -X POST -d "submission[1]=answer of Question 1" -d "submission[2_first]=Fir
 jotform api网站https://api.jotform.com/docs/
 pipedirve https://pipedrive.readme.io/docs/creating-a-deal
 
+pipedirve https://developers.pipedrive.com/docs/api/v1/
