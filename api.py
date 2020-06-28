@@ -218,6 +218,7 @@ class PipedriveAPI(object):
         return r.json()
 
     def AddDealFields(self, name, field_type="varchar"):
+        print('AddDealField')
         url = 'https://api.pipedrive.com/v1/dealFields?api_token={}'.format(self.__api_token)
         r = self.__session.post(url, data={'name':name,'field_type': field_type})
         return r.json()

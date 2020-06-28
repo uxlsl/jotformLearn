@@ -34,6 +34,7 @@ def findOrAddDealField(pd, name):
     ret = pd.GetAllDealFields()
     for i in ret['data'] if ret['success'] else []:
         if i['name'] == 'submissionID':
+            print("find DealField")
             return i['key']
     else:
         ret = pd.AddDealFields(name)
