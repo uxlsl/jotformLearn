@@ -19,12 +19,11 @@ def findOrAddPerson(pd, name, email, phone):
         ):
             print("find persion")
             pprint(persion)
-            person_id = persion["id"]
-            break
+            return persion
     else:
         ret = pd.addPerson(name, email=[email], phone=[phone])
         if ret["success"]:
-            person_id = ret["data"]["id"]
+            return ret["data"]
         else:
             print("add perion fail")
             # TODO
@@ -75,7 +74,7 @@ def main(
             "person_id": person_id,
         }
         # userinfo['submissionID'] = ret['content']['submissionID']
-        key = findOrAddDealField('submissionID')
+        key = findOrAddDealField(pd, 'submissionID')
         deal[key] = submissionID
         r = pd.createDeal(deal)
         pprint(r)

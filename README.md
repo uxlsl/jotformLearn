@@ -58,8 +58,9 @@ curl -X POST -d "submission[1]=answer of Question 1" -d "submission[2_first]=Fir
 
 ```
 
+## pipedrive api
 
-
+新建 Person
 ```
 
 https://developers.pipedrive.com/docs/api/v1/#!/Persons/post_persons
@@ -67,12 +68,11 @@ https://developers.pipedrive.com/docs/api/v1/#!/Persons/post_persons
 
 ```
 
-## 问题
-+ 提交是不是会被读
+## TODO
++ 错误逻辑处理
 
 ## 参考
 
 jotform api网站https://api.jotform.com/docs/
 pipedirve https://pipedrive.readme.io/docs/creating-a-deal
-
 pipedirve https://developers.pipedrive.com/docs/api/v1/
