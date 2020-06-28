@@ -69,8 +69,9 @@ def main(
         person_id = person['id']
         print("persion_id", person_id)
         deal = {
-            "title": "{} name->{},phone->{}".format(
-                datetime.now().strftime("%Y-%m-%d %H:%M:%S"), name, phone
+            "title": "Appointment Datetime {} name->{},phone->{}".format(
+                #datetime.now().strftime("%Y-%m-%d %H:%M:%S"), name, phone
+                Datetime, name, phone
             ),
             "person_id": person_id,
         }
