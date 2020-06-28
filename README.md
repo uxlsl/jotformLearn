@@ -1,6 +1,8 @@
-# jotform学习
+# jotform及pipedirve学习
 
-使用jotform api 接口下载提交数据到数据库
+1. 使用jotform api 接口下载提交数据到数据库
+2. 提交数据jotform api并把submission_id 相关信息也提交到pipedrive中
+
 
 ## 安装
 
